@@ -62,5 +62,11 @@
 
 - Added git repository and synced with remote using ssh
 
+- completed all database CRUD operation
+
+- installing babel 
+    https://www.robinwieruch.de/minimal-node-js-babel-setup/
+    completed successfully
+
 ################ NOTE
 - if you building api application then neglect the pages and views 

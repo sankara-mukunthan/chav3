@@ -55,20 +55,37 @@ app.get("/", (req, res) => {
 const userSchema = new moongoose.Schema({
   name: {
     type: String,
+    minlength: 3,
+    maxlength: 255,
     required: true
   },
   role: {
     type: String,
-    required: true
+    enum: ["distributor", "customer", "delivery exevutive", "manufacturer"] //using enum we can restrict the role to declared
   },
+
   mobileNumr: {
     type: Number,
     unique: true,
-    required: true
+    validate: {
+      // we can also use the required : function(){return condition}
+      validator: function(m) {
+        return m && m.length == 10;
+      },
+      message: "mobile number needs equal to 10"
+    }
   },
   loginPassword: {
     type: String,
-    required: true
+    //use async validator with callback since thread has to use this value only on completion of this function
+    validate: {
+      isAsync: true,
+      validator: function(p) {
+        const result = m.length > 6;
+        callback(result);
+      },
+      message: "password must be atleast 6 characters"
+    }
   },
   address: {
     doorNumr: String,
@@ -76,8 +93,11 @@ const userSchema = new moongoose.Schema({
     locality: String,
     area: String,
     district: String,
-    state: String,
-    pincode: { type: Number, required: true }
+    state: { type: String, match: /^tamil nadu/i },
+    pincode: {
+      type: Number,
+      required: true
+    }
   },
 
   createdBy: String,
@@ -94,12 +114,13 @@ const User = moongoose.model("user", userSchema);
 async function createUser() {
   try {
     const user = new User({
-      name: "rajini haasan",
+      name: "nayan keerthy",
       role: "distributor",
-      mobileNumr: "9094440009",
-      loginPassword: "distest2",
+      mobileNumr: "909444008",
+      loginPassword: "distest3",
       address: {
-        pincode: "600092"
+        state: "tamil nadu",
+        pincode: "600093"
       },
       createdBy: "admin",
       isPublished: true
@@ -177,7 +198,7 @@ async function removeUser(id) {
   }
 }
 
-removeUser("5bfbc7c7697f6e04bae5fe62");
+// removeUser("5bfd3bcfde5a9409ae4a511a"); | restore when needed
 // api routes
 // user
 app.use("/api/users", userApi);
