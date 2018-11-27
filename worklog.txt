@@ -60,5 +60,7 @@
 
 - creating user schema and model 
 
+- Added git repository and synced with remote using ssh
+
 ################ NOTE
 - if you building api application then neglect the pages and views 

@@ -79,7 +79,9 @@ const userSchema = new moongoose.Schema({
     state: String,
     pincode: { type: Number, required: true }
   },
+
   createdBy: String,
+  modifiedAt: Date,
   createdAt: { type: Date, default: Date.now },
   isPublished: Boolean
 });
@@ -121,7 +123,61 @@ async function getAllUsers() {
     debug("error in getting all users", err);
   }
 }
-getAllUsers();
+// getAllUsers(); | activate it later
+
+//update single user and id is provided
+async function updateuser(id) {
+  try {
+    const user = await User.findById(id);
+    if (!user) return debug("user not found .. update function");
+    const result = await user.set({
+      mobileNumr: 9488668873
+    });
+    debug("mobile number updated successfully ", result.mobileNumr);
+  } catch (err) {
+    debug("error in updating mobile number");
+  }
+}
+// updateuser("5bfbc7c7697f6e04bae5fe62"); | activate it later
+
+// update bunch of user's with criteria or update when id not provided
+async function updateusers(id) {
+  try {
+    //method one that returns result
+    // const result = await User.update(
+    //   { _id: id },
+    //   {
+    //     $set: {
+    //       mobileNumr: 9677071570
+    //     }
+    //   }
+    // );
+    //method two that returns the object
+    const user = await User.findByIdAndUpdate(
+      id,
+      {
+        $set: { mobileNumr: 9488668873 }
+      },
+      { new: true }
+    );
+    debug("update successfully", user);
+  } catch (err) {
+    debug("error 2nd update method");
+  }
+}
+// updateusers("5bfbc7c7697f6e04bae5fe62"); | restore when needed
+
+// remove users using deleteOne or deleteMany or findbyIdAndRemove
+async function removeUser(id) {
+  try {
+    const result = await User.deleteOne({ _id: id });
+    debug("deleted successfully", result);
+  } catch (err) {
+    debug("error in removing user", err);
+  }
+}
+
+removeUser("5bfbc7c7697f6e04bae5fe62");
 // api routes
 // user
 app.use("/api/users", userApi);
