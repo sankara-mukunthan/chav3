@@ -1,0 +1,17 @@
+middlewares :https://blog.jscrambler.com/setting-up-5-useful-middlewares-for-an-express-api/
+- cors : control over clients request
+- ssl support to http
+- GZIP : compression to load faster
+- cluster | study the usage and implement when its needed
+
+NODE_ENV = development | testing | staging or qa | production
+12factor APP
+travis CI 
+DOCKER
+
+Tools you must use :
+- compass for mongodb client server 
+
+Docs to be maintained
+- api documentation 
+- data model and er 

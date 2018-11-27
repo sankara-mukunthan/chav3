@@ -1,0 +1,1 @@
+sample file to test the static middleware of express

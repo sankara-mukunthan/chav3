@@ -1,0 +1,6 @@
+{
+    "name": "savithri - production",
+    "mail": {
+        "host": "prod-mail-server"
+    }
+}

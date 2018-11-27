@@ -1,0 +1,64 @@
+- project created using npm init
+
+- express is installed
+
+- joi is installed
+
+- basic routing to home page is tested
+
+- listening to port 3000 locally
+
+- installing nodemon for automatic reloading on browser on save
+
+- api for all rest operations related to user is created 
+
+- ##throws error when res.send() is used multiple times within a middleware ..
+    occurs when there is fail request module is excuted .
+
+- using built-in middlewares | use only required middleware as it will slow down the reques res pipleline
+    1. url encoder : to pass value via url rather than body of the request () 
+        | old method not using now need to know why
+    2. json : parse the req into json format
+    3. static : can load the static file that are in "name" diretory
+        eg: console.log(user);
+
+- custom middlewares for logging and authentication
+    1. logger.js : to maintain a log
+    2. autthentication | within index.js file itself
+
+- 3rd party middleware
+    1. helmet : security middleware adds http headers 
+    2. morgan : api logger | use only on development => validate whether env variable = development
+
+- environment variable used to let us have differant env for development , production, testing 
+    app.get(env) : returns the development mode 
+    env value can be set on cmd with following cmd => export NODE_ENV= production 
+    | must use when moving the project to production
+
+- configuration setting that will maintain differant mail server and database for production and development
+    json files are created under config folder which are automaticaly changed based on the NODE_ENV value
+
+- config files are easily accessible so do not store the pwd details with config | one company is hacked 
+    DO save pwd with env => export appname_password=pwd this {appname_password} has to be unique 
+
+- install dotenv using npm / this file is used to add values like db_pwd which then can be assigned to config file
+    it has key=value structure . this can be accessed with process.env.{key}
+    this .env must not be included in the source or git repository as it has sensible info
+    inorder to use dotenv .. i have customised custom-environment-variable as js to have full config =https://github.com/schikin/example-node-config
+
+- in a heavier application doing checking with console.log and managing it is tedious process
+    so we use debugging package and env variable to disable and enable it on development
+    it also helps to see the categorised debug like debug related to database
+
+- npm i debug , require it and create debugger like for startup, db , authentication extra 
+    set env variable DEBUG= app:*/ app:startup,app:db/ or one value or nothing
+    need to set env variable | on production
+
+- project structures is reconfigured to pages and routes , which are seperated from the index.js 
+
+- installing mongodb using brew
+
+- creating user schema and model 
+
+################ NOTE
+- if you building api application then neglect the pages and views 
