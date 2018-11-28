@@ -2,7 +2,7 @@
 
 - express is installed
 
-- joi is installed
+- joi is installed : to validate data received from the api
 
 - basic routing to home page is tested
 
@@ -68,5 +68,13 @@
     https://www.robinwieruch.de/minimal-node-js-babel-setup/
     completed successfully
 
+- syncing api with model : done
+
+- adding distributor model and api
+    issue : creating password
+
+- adding  authentication(idetifying the user for integrity)
+    , authorization(if user has rights to perform the operation),
+    permission(2nd level of authorization) 
 ################ NOTE
 - if you building api application then neglect the pages and views 
