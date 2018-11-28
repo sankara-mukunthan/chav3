@@ -2,6 +2,8 @@ const express = require("express");
 const api = express.Router();
 const Joi = require("joi");
 const debug = require("debug")("app:userApi");
+const _ = require("lodash");
+const bcrypt = require("bcrypt");
 const { User } = require("../models/user"); // orelse we have use like user.User everywere so we are destructuring
 
 // api to list all the users
@@ -33,6 +35,8 @@ api.post("/", async (req, res) => {
   const { error } = validateUser(req.body); // this is similar to validationResult.error accesing object destructor
   if (error) return res.status(400).json(error.details[0].message);
 
+  let user = await User.findOne({ mobileNumr: req.body.mobilenumr });
+  if (user) return res.status(400).send("mobile numr is already exists");
   let singleUser = new User({
     name: req.body.name,
     mobileNumr: req.body.mobilenumr,
@@ -42,10 +46,13 @@ api.post("/", async (req, res) => {
     }
   });
   try {
+    const salt = await bcrypt.genSalt(9);
+    singleUser.password = await bcrypt.hash(singleUser.password, salt);
     singleUser = await singleUser.save();
-    res.json(singleUser);
+    res.json(_.pick(singleUser, ["password", "name", "mobileNumr"]));
+    //_ lets us pick only what is needed same can be used in to replace req.body which repeated above
   } catch (err) {
-    debug("error in api posting single user", err.message);
+    debug("error in api posting single user:", err.message);
   }
 });
 
@@ -62,7 +69,7 @@ api.put("/:id", async (req, res) => {
     if (!user) return res.status(404).send("user not found");
     res.json(user);
   } catch (err) {
-    debug("error in api update user", err.message);
+    debug("error in api update user:", err.message);
   }
 });
 

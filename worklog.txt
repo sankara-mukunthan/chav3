@@ -73,8 +73,12 @@
 - adding distributor model and api
     issue : creating password
 
-- adding  authentication(idetifying the user for integrity)
+- hashing password with bcyprt and password complexity with joi-complexity
+- adding logging authentication(idetifying the user for integrity)
+    -password verification done 
+    - JSON web token passing 
     , authorization(if user has rights to perform the operation),
     permission(2nd level of authorization) 
+
 ################ NOTE
 - if you building api application then neglect the pages and views 

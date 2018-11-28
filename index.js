@@ -6,9 +6,9 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 const logger = require("./middlewares/logger");
-const userApi = require("./api_routes/users");
 const moongoose = require("mongoose");
-
+const userApi = require("./api_routes/users");
+const authApi = require("./api_routes/auth");
 //configuration details
 console.log(`application name : ${config.get("name")}`);
 console.log(`mail server : ${config.get("mail.host")}`);
@@ -54,5 +54,6 @@ app.get("/", (req, res) => {
 // api routes
 // user
 app.use("/api/users", userApi);
+app.use("/api/auth", authApi);
 
 app.listen(port, () => debug(`listening to port: ${port}`));
