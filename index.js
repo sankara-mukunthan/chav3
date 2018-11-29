@@ -9,6 +9,12 @@ const logger = require("./middlewares/logger");
 const moongoose = require("mongoose");
 const userApi = require("./api_routes/users");
 const authApi = require("./api_routes/auth");
+const distributorApi = require("./api_routes/distributors");
+
+if (!config.get("jwtSecretKey")) {
+  debug("FATAL ERROR : secret key needs to be set");
+  process.exit(1);
+}
 //configuration details
 console.log(`application name : ${config.get("name")}`);
 console.log(`mail server : ${config.get("mail.host")}`);
@@ -28,10 +34,6 @@ if (app.get("env") === "development") {
 
 //custom middleware
 app.use(logger);
-app.use(function(req, res, next) {
-  console.log("authenticating");
-  next();
-});
 
 // database connection
 moongoose
@@ -54,6 +56,8 @@ app.get("/", (req, res) => {
 // api routes
 // user
 app.use("/api/users", userApi);
+debug("authenticating");
 app.use("/api/auth", authApi);
+app.use("/api/distributors", distributorApi);
 
 app.listen(port, () => debug(`listening to port: ${port}`));

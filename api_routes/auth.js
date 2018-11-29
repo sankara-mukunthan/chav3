@@ -4,7 +4,6 @@ const Joi = require("joi");
 const debug = require("debug")("app:authApi");
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const { User } = require("../models/user"); // orelse we have use like user.User everywere so we are destructuring
 
 //login api to authenticate user
@@ -23,8 +22,8 @@ api.post("/", async (req, res) => {
     );
     if (!validPassword)
       return res.status(400).send("invalid username or password");
-    const secretKey = user.password;
-    const token = jwt.sign({ _id: user._id }, secretKey);
+
+    const token = user.genAuthToken();
     res.json(token);
     //_ lets us pick only what is needed same can be used in to replace req.body which repeated above
   } catch (err) {

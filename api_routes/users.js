@@ -4,6 +4,7 @@ const Joi = require("joi");
 const debug = require("debug")("app:userApi");
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
+const config = require("config");
 const { User } = require("../models/user"); // orelse we have use like user.User everywere so we are destructuring
 
 // api to list all the users
@@ -49,7 +50,10 @@ api.post("/", async (req, res) => {
     const salt = await bcrypt.genSalt(9);
     singleUser.password = await bcrypt.hash(singleUser.password, salt);
     singleUser = await singleUser.save();
-    res.json(_.pick(singleUser, ["password", "name", "mobileNumr"]));
+    const token = user.genAuthToken();
+    res
+      .header("x-auth-token", token)
+      .json(_.pick(singleUser, ["password", "name", "mobileNumr"]));
     //_ lets us pick only what is needed same can be used in to replace req.body which repeated above
   } catch (err) {
     debug("error in api posting single user:", err.message);

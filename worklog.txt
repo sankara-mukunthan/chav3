@@ -79,6 +79,6 @@
     - JSON web token passing 
     , authorization(if user has rights to perform the operation),
     permission(2nd level of authorization) 
-
+    - on registering we need to login the user automatically so that he doesnt need to login again
 ################ NOTE
 - if you building api application then neglect the pages and views 
