@@ -1,47 +1,55 @@
 const express = require("express");
 const api = express.Router();
 const Joi = require("joi");
-const debug = require("debug")("app:distibutorApi");
+const debug = require("debug")("app:distributorApi");
 const bcrypt = require("bcrypt");
-import validateUser from "../api_routes/users";
-const User = require("./users");
-const { Distibutor } = require("../models/distributor"); // orelse we have use like distibutor.Distibutor everywere so we are destructuring
+const _ = require("lodash");
+const authorize = require("../middlewares/authorize");
+const adminAuth = require("../middlewares/adminAuth");
+const { User } = require("../models/user");
 
-// api to list all the distibutors
-api.get("/", async (req, res) => {
+const { Distributor } = require("../models/distributor"); // orelse we have use like distributor.Distributor everywere so we are destructuring
+
+// api to list all the distributors
+api.get("/", authorize, async (req, res) => {
   try {
-    const distibutors = await Distibutor.find().sort("name");
-    if (!distibutors)
-      return debug("there are no distibutors please add an distibutor");
-    res.json(distibutors);
+    const distributors = await Distributor.find().sort("name");
+    if (!distributors)
+      return debug("there are no distributors please add an distributor");
+    res.json(distributors);
   } catch (err) {
-    debug("error in api getting all distibutors", err.message);
+    debug("error in api getting all distributors", err.message);
   }
 });
 
-// api to get requested distibutor's name
+// api to get requested distributor's name
 api.get("/:id", async (req, res) => {
-  const distibutor = Distibutor.find(c => c.id === req.params.id);
-  if (!distibutor) return res.status(404).send("distibutor not found");
+  const distributor = Distributor.find(c => c.id === req.params.id);
+  if (!distributor) return res.status(404).send("distributor not found");
 
   try {
-    res.json(distibutor);
+    res.json(distributor);
   } catch (err) {
-    debug("error in api getting single distibutor", err.message);
+    debug("error in api getting single distributor", err.message);
   }
 });
 
-// api to post => add single distibutor
+// api to post => add single distributor
 
-api.post("/", async (req, res) => {
+api.post("/", [authorize, adminAuth], async (req, res) => {
   try {
-    const { error } = validateDistibutor(req.body); // this is similar to validationResult.error accesing object destructor
+    const { error } = validateDistributor(req.body); // this is similar to validationResult.error accesing object destructor
     if (error) return res.status(400).json(error.details[0].message);
+    // Checking the availability of the user
+    let checkuser = await User.findOne({
+      mobileNumr: req.body.user.mobilenumr
+    });
+    if (checkuser) return res.send("mobile numr is already exists");
 
-    const user = fromUser(req.body.user);
+    const user = await fromUser(req.body.user);
     if (!user) return debug("fatal error deal with user creation");
 
-    let singleDistibutor = new Distibutor({
+    let singleDistributor = new Distributor({
       bizName: req.body.name,
       user: {
         _id: user._id,
@@ -63,11 +71,26 @@ api.post("/", async (req, res) => {
       },
       customers: [req.body.customers]
     });
-
-    singleDistibutor = await singleDistibutor.save();
-    res.json(singleDistibutor);
+    const salt = await bcrypt.genSalt(9);
+    singleDistributor.user.password = await bcrypt.hash(
+      singleDistributor.user.password,
+      salt
+    );
+    singleDistributor = await singleDistributor.save();
+    const token = user.genAuthToken();
+    res
+      .header("x-auth-token", token)
+      .json(
+        _.pick(singleDistributor, [
+          "bizName",
+          "user.password",
+          "user.mobileNumr",
+          "customers"
+        ])
+      );
+    //_ lets us pick only what is needed same can be used in to replace req.body which repeated above
   } catch (err) {
-    debug("error in api posting single distibutor", err.message);
+    debug("error in api posting single distributor", err.message);
   }
 });
 
@@ -76,25 +99,25 @@ api.post("/", async (req, res) => {
 //   const { error } = validateNameNumr(req.body);
 //   if (error) return res.status(400).send(error.details[0].message);
 //   try {
-//     const distibutor = await Distibutor.findByIdAndUpdate(
+//     const distributor = await Distributor.findByIdAndUpdate(
 //       req.params.id,
 //       { name: req.body.name, mobileNumr: req.body.mobilenumr },
 //       { new: true }
 //     );
-//     if (!distibutor) return res.status(404).send("distibutor not found");
-//     res.json(distibutor);
+//     if (!distributor) return res.status(404).send("distributor not found");
+//     res.json(distributor);
 //   } catch (err) {
-//     debug("error in api update distibutor", err.message);
+//     debug("error in api update distributor", err.message);
 //   }
 // });
 
 // api.delete("/:id", async (req, res) => {
 //   try {
-//     const distibutor = await Distibutor.findByIdAndRemove(req.params.id);
-//     if (!distibutor) return res.status(404).send("distibutor not found");
-//     res.json(distibutor);
+//     const distributor = await Distributor.findByIdAndRemove(req.params.id);
+//     if (!distributor) return res.status(404).send("distributor not found");
+//     res.json(distributor);
 //   } catch (err) {
-//     debug("error in api deleting single distibutor", err.message);
+//     debug("error in api deleting single distributor", err.message);
 //   }
 // });
 
@@ -102,14 +125,12 @@ async function fromUser(user) {
   try {
     const { error } = validateUser(user); // this is similar to validationResult.error accesing object destructor
     if (error) return debug(error.details[0].message);
-    // Checking the availability of the user
-    let user = await User.findOne({ mobileNumr: rec.user.mobilenumr });
-    if (user) return debug("mobile numr is already exists");
+
     //if user doesnt found carry on to create a user
     let singleUser = new User({
       name: user.name,
       mobileNumr: user.mobilenumr,
-      password: password,
+      password: user.password,
       idProof: {
         proofType: user.idProof.proofType,
         proofId: user.idProof.proofId
@@ -126,14 +147,37 @@ async function fromUser(user) {
     const salt = await bcrypt.genSalt(9);
     singleUser.password = await bcrypt.hash(singleUser.password, salt);
     singleUser = await singleUser.save();
-
     return singleUser;
   } catch (err) {
     debug("error in api distributor user first creation:", err);
   }
 }
 
-function validateDistibutor(distibutor) {
+function validateUser(user) {
+  //schema is defined set which is compared with recieved object for validation
+  // to validate the incoming
+  const schema = {
+    name: Joi.string()
+      .min(3)
+      .required(),
+    mobilenumr: Joi.number().required(),
+    password: Joi.string().required(),
+    idProof: {
+      proofType: Joi.string().required(),
+      proofId: Joi.string().required()
+    },
+    address: {
+      line1: Joi.string().required(),
+      line2: Joi.string().required(),
+      area: Joi.string().required(),
+      district: Joi.string().required(),
+      state: Joi.string().required(),
+      pincode: Joi.number().required()
+    }
+  };
+  return Joi.validate(user, schema);
+}
+function validateDistributor(distributor) {
   //schema is defined set which is compared with recieved object for validation
   // to validate the incoming
   const schema = {
@@ -144,15 +188,15 @@ function validateDistibutor(distibutor) {
     customers: Joi.array().min(1)
   };
 
-  return Joi.validate(distibutor, schema);
+  return Joi.validate(distributor, schema);
 }
 
-function validateNameNumr(distibutor) {
+function validateNameNumr(distributor) {
   const schema = {
     name: Joi.string().required(),
     mobilenumr: Joi.number().required()
   };
 
-  return Joi.validate(distibutor, schema);
+  return Joi.validate(distributor, schema);
 }
 module.exports = api;

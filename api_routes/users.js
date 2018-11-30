@@ -5,12 +5,15 @@ const debug = require("debug")("app:userApi");
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
 const config = require("config");
+const authorize = require("../middlewares/authorize");
 const { User } = require("../models/user"); // orelse we have use like user.User everywere so we are destructuring
 
 // api to list all the users
-api.get("/", async (req, res) => {
+api.get("/", authorize, async (req, res) => {
   try {
-    const users = await User.find().sort("name");
+    const users = await User.find()
+      .sort("name")
+      .select("-password");
     if (!users) return debug("there are no users please add an user");
     res.json(users);
   } catch (err) {
@@ -38,6 +41,7 @@ api.post("/", async (req, res) => {
 
   let user = await User.findOne({ mobileNumr: req.body.mobilenumr });
   if (user) return res.status(400).send("mobile numr is already exists");
+
   let singleUser = new User({
     name: req.body.name,
     mobileNumr: req.body.mobilenumr,

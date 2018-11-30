@@ -17,6 +17,7 @@ const userSchema = new moongoose.Schema({
     type: String,
     required: true
   },
+  isAdmin: Boolean,
   // photo: {
   //   data: Buffer,
   //   contentType: String
@@ -24,7 +25,7 @@ const userSchema = new moongoose.Schema({
   idProof: {
     proofType: {
       type: String,
-      enum: ["driving liscence, aadhar card, voter id"]
+      enum: ["driving liscence", "aadhar card", "voter id"]
     },
     proofId: String
     // proofPhoto: {
@@ -46,7 +47,10 @@ const userSchema = new moongoose.Schema({
 });
 
 userSchema.methods.genAuthToken = function() {
-  const token = jwt.sign({ _id: this._id }, config.get("jwtSecretKey"));
+  const token = jwt.sign(
+    { _id: this._id, isAdmin: this.isAdmin },
+    config.get("jwtSecretKey")
+  );
   return token;
 };
 

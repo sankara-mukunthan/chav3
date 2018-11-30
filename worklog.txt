@@ -76,9 +76,21 @@
 - hashing password with bcyprt and password complexity with joi-complexity
 - adding logging authentication(idetifying the user for integrity)
     -password verification done 
-    - JSON web token passing 
-    , authorization(if user has rights to perform the operation),
+    - JSON web token passing : done
+    , authorization(if user has rights to perform the operation), :done
+    - getting current user name after looged in : done
+    - token that we are generating are not stored in any place at server so logout feature has to be wriiten on the client side
+
+    instead of doing /:id we do /me so that the user after logged cannot view other user information via /:id using their id
     permission(2nd level of authorization) 
     - on registering we need to login the user automatically so that he doesnt need to login again
-################ NOTE
+    we are adding isAdmin variable to user on genAuth function to create the jwt with digital signature 
+    so that other user cannot make themselves as admin by changing the value of the isAdmin
+    for each role we have to write middleware to determine whether it is what who they say are
+    to pass two middlewares to router use array
+    application may have more number of roles in that case use array and bigger application use operations[] in user model which 
+    then can be checked whether he can perform that particular intended operation
+
+
+################################################ NOTE ###################################################
 - if you building api application then neglect the pages and views 
