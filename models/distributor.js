@@ -9,4 +9,9 @@ const distributorSchema = new moongoose.Schema({
 });
 const Distributor = moongoose.model("Distributor", distributorSchema);
 
+distributorSchema.methods.genAuthToken = function() {
+  const token = jwt.sign({ _id: this._id }, config.get("jwtSecretKey"));
+  return token;
+};
+
 exports.Distributor = Distributor;

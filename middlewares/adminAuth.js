@@ -5,7 +5,8 @@ function adminAuth(req, res, next) {
       return res.status(401).send("access denied. admin only have permission");
     next();
   } catch (err) {
-    debug("solve the following issue", err.message);
+    debug("error in admin auth middleware");
+    next(err);
   }
 }
 

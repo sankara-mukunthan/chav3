@@ -26,7 +26,9 @@
     "jsonwebtoken": "^8.4.0",
     "lodash": "^4.17.11",
     "mongoose": "^5.3.13",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "winston": "^2.4.0",
+    "winston-mongodb": "^3.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

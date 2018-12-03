@@ -4,38 +4,40 @@ const Joi = require("joi");
 const debug = require("debug")("app:userApi");
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
-const config = require("config");
+const asyncMiddleware = require("../middlewares/tryCatch");
 const authorize = require("../middlewares/authorize");
 const { User } = require("../models/user"); // orelse we have use like user.User everywere so we are destructuring
 
-// api to list all the users
-api.get("/", authorize, async (req, res) => {
-  try {
+// api to list all the users | no authorization | try catch using common middleware
+api.get(
+  "/",
+  asyncMiddleware(async (req, res, next) => {
     const users = await User.find()
       .sort("name")
       .select("-password");
-    if (!users) return debug("there are no users please add an user");
+    if (!users) {
+      res.status(404);
+      return debug("there are no users please add an user");
+    }
     res.json(users);
-  } catch (err) {
-    debug("error in api getting all users", err.message);
-  }
-});
+  })
+);
 
 // api to get requested user's name
-api.get("/:id", async (req, res) => {
-  const user = User.find(c => c.id === req.params.id);
-  if (!user) return res.status(404).send("user not found");
+api.get(
+  "/:id",
+  authorize,
+  asyncMiddleware(async (req, res) => {
+    const user = User.find(c => c.id === req.params.id);
+    if (!user) return res.status(404).send("user not found");
 
-  try {
     res.json(user);
-  } catch (err) {
-    debug("error in api getting single user", err.message);
-  }
-});
+  })
+);
 
 // api to post => add single user
 
-api.post("/", async (req, res) => {
+api.post("/", async (req, res, next) => {
   const { error } = validateUser(req.body); // this is similar to validationResult.error accesing object destructor
   if (error) return res.status(400).json(error.details[0].message);
 
@@ -61,6 +63,7 @@ api.post("/", async (req, res) => {
     //_ lets us pick only what is needed same can be used in to replace req.body which repeated above
   } catch (err) {
     debug("error in api posting single user:", err.message);
+    next(err);
   }
 });
 

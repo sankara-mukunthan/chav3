@@ -1,16 +1,29 @@
 const config = require("config");
+const winston = require("winston");
+require("winston-mongodb");
 const debug = require("debug")("app:startup");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
-const logger = require("./middlewares/logger");
 const moongoose = require("mongoose");
 const userApi = require("./api_routes/users");
 const authApi = require("./api_routes/auth");
 const distributorApi = require("./api_routes/distributors");
+const error = require("./middlewares/error");
 
+winston.handleExceptions(
+  new winston.transports.File({ filename: "uncaughtExceptions.log" })
+);
+process.on("uncaughtRejection", ex => {
+  throw ex;
+});
+
+winston.add(winston.transports.File, { filename: "logfile.log" });
+winston.add(winston.transports.MongoDB, {
+  db: "mongodb://localhost:27017/savithri"
+});
 if (!config.get("jwtSecretKey")) {
   debug("FATAL ERROR : secret key needs to be set");
   process.exit(1);
@@ -32,9 +45,6 @@ if (app.get("env") === "development") {
   debug("morgan enabled ...");
 }
 
-//custom middleware
-app.use(logger);
-
 // database connection
 moongoose
   .connect(
@@ -45,7 +55,7 @@ moongoose
     }
   )
   .then(() => console.log("connected to database"))
-  .catch(err => console.error(`error in databased connection : ${err}`));
+  .catch(err => console.error(`error in connecting database :${err.message}`));
 
 // view routes
 //home route
@@ -60,4 +70,7 @@ debug("authenticating");
 app.use("/api/auth", authApi);
 app.use("/api/distributors", distributorApi);
 
+//error handling middleware should be after all the controllers and api since we are using next()
+// the object on the next will be transfered to below function
+app.use(error);
 app.listen(port, () => debug(`listening to port: ${port}`));

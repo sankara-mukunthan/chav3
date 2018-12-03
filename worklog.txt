@@ -91,6 +91,12 @@
     application may have more number of roles in that case use array and bigger application use operations[] in user model which 
     then can be checked whether he can perform that particular intended operation
 
+- error handling 
+    mongodb server if disconnected then the thread will coldes so even if the server backs up on again it will not be able to perform 
+    so we need to catch error whenever we a re awaiting
+creating error handle middleware since we cannot apply to all the available router inviducallly when there is a change
+- loggin the application
+
 
 ################################################ NOTE ###################################################
 - if you building api application then neglect the pages and views 
