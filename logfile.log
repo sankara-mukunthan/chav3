@@ -14,3 +14,43 @@
 {"level":"info","message":"connected to database","timestamp":"2018-12-03T10:32:21.802Z"}
 {"level":"info","message":"connected to database","timestamp":"2018-12-03T10:32:31.863Z"}
 {"level":"info","message":"connected to database","timestamp":"2018-12-03T10:32:52.221Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T12:38:30.156Z"}
+{"level":"info","message":"connected to database","timestamp":"2018-12-05T12:38:30.230Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T12:57:34.111Z"}
+{"level":"info","message":"connected to database","timestamp":"2018-12-05T12:57:34.182Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T12:58:34.727Z"}
+{"level":"info","message":"connected to database","timestamp":"2018-12-05T12:58:34.803Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T12:59:12.728Z"}
+{"level":"info","message":"connected to database","timestamp":"2018-12-05T12:59:12.764Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T13:00:25.419Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T13:20:02.310Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T13:22:54.295Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T13:23:23.925Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T13:23:35.579Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T13:23:53.821Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T13:25:04.098Z"}
+{"message":"Invalid connection string","stack":"MongoParseError: Invalid connection string\n    at parseConnectionString (/Users/sankaramukunthan/projects/chav3/node_modules/mongodb-core/lib/uri_parser.js:412:21)\n    at connect (/Users/sankaramukunthan/projects/chav3/node_modules/mongodb/lib/operations/mongo_client_ops.js:180:3)\n    at connectOp (/Users/sankaramukunthan/projects/chav3/node_modules/mongodb/lib/operations/mongo_client_ops.js:284:3)\n    at executeOperation (/Users/sankaramukunthan/projects/chav3/node_modules/mongodb/lib/utils.js:420:24)\n    at MongoClient.connect (/Users/sankaramukunthan/projects/chav3/node_modules/mongodb/lib/mongo_client.js:168:10)\n    at Promise (/Users/sankaramukunthan/projects/chav3/node_modules/mongoose/lib/connection.js:521:12)\n    at new Promise (<anonymous>)\n    at NativeConnection.Connection.openUri (/Users/sankaramukunthan/projects/chav3/node_modules/mongoose/lib/connection.js:518:19)\n    at Mongoose.connect (/Users/sankaramukunthan/projects/chav3/node_modules/mongoose/lib/index.js:262:15)\n    at module.exports (/Users/sankaramukunthan/projects/chav3/collection/db.js:10:6)\n    at Object.<anonymous> (/Users/sankaramukunthan/projects/chav3/index.js:14:1)\n    at Module._compile (module.js:653:30)\n    at loader (/Users/sankaramukunthan/projects/chav3/node_modules/babel-register/lib/node.js:144:5)\n    at Object.require.extensions.(anonymous function) [as .js] (/Users/sankaramukunthan/projects/chav3/node_modules/babel-register/lib/node.js:154:7)\n    at Module.load (module.js:566:32)\n    at tryModuleLoad (module.js:506:12)","name":"MongoParseError","level":"error","timestamp":"2018-12-05T13:25:04.111Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T13:26:42.333Z"}
+{"level":"info","message":"connected to mongodb://localhost:27017/savithri","timestamp":"2018-12-05T13:26:42.369Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T13:28:44.750Z"}
+{"level":"info","message":"connected to mongodb://localhost:27017/savithri","timestamp":"2018-12-05T13:28:44.785Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T13:29:21.435Z"}
+{"level":"info","message":"connected to mongodb://localhost:27017/savithri","timestamp":"2018-12-05T13:29:21.476Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T13:29:40.484Z"}
+{"level":"info","message":"connected to mongodb://localhost:27017/savithri","timestamp":"2018-12-05T13:29:40.544Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T13:30:00.373Z"}
+{"level":"info","message":"connected to mongodb://localhost:27017/savithri","timestamp":"2018-12-05T13:30:00.417Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T13:30:05.863Z"}
+{"level":"info","message":"connected to mongodb://localhost:27017/savithri","timestamp":"2018-12-05T13:30:05.919Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T13:30:54.819Z"}
+{"level":"info","message":"connected to mongodb://localhost:27017/savithri","timestamp":"2018-12-05T13:30:54.857Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T13:31:10.239Z"}
+{"level":"info","message":"connected to mongodb://localhost:27017/savithri","timestamp":"2018-12-05T13:31:10.276Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T13:31:46.718Z"}
+{"level":"info","message":"connected to mongodb://localhost:27017/savithri","timestamp":"2018-12-05T13:31:46.753Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T13:33:01.582Z"}
+{"level":"info","message":"connected to mongodb://localhost:27017/savithri","timestamp":"2018-12-05T13:33:01.622Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T13:33:37.729Z"}
+{"level":"info","message":"connected to mongodb://localhost:27017/savithri","timestamp":"2018-12-05T13:33:37.766Z"}
+{"level":"info","message":"listening to port: 3020","timestamp":"2018-12-05T13:46:56.200Z"}
+{"level":"info","message":"connected to mongodb://localhost:27017/savithri_test","timestamp":"2018-12-05T13:46:56.231Z"}

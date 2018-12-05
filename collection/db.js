@@ -1,15 +1,18 @@
 const moongoose = require("mongoose");
 const winston = require("winston");
+const config = require("config");
 
 module.exports = function() {
+  const db = config.get("db");
+  console.log(db);
   // database connection
   moongoose
     .connect(
-      "mongodb://localhost:27017/savithri",
+      db,
       {
         useNewUrlParser: true,
         useCreateIndex: true
       }
     )
-    .then(() => winston.info("connected to database"));
+    .then(() => winston.info(`connected to ${db}`));
 };

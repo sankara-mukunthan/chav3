@@ -11,9 +11,9 @@ if (app.get("env") === "development") {
   app.use(morgan("tiny"));
 }
 
-require("./collection/routes")(app);
 require("./collection/db")();
-require("./collection/logging");
+require("./collection/routes")(app);
+require("./collection/logging")();
 require("./collection/config")();
 
 // view routes

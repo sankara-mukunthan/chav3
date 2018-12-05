@@ -97,6 +97,23 @@
 creating error handle middleware since we cannot apply to all the available router inviducallly when there is a change
 - loggin the application
 
+-  application refactored
+
+- test framework implementation
+    test cases must be greater than number of execution paths
+    when testing for string use regular expression rather than expect.toBe
+    when testing array , test irrespective of array location like toContain or expect.toequal(expect.arrayContaining([]))
+    when testing object expect.toEqual({"key": value,"key": value}), toMatchObject({}}) when you want list only seleted property
+        toBe(), toEqual() will be specific test , keep in mind we dont need toospecific or too general
+    when testing exception use expect( ()=>{fileName.function(value)}).toThrow()
+    use --watchAll within package.json test script to avoid the repeatative task of running test everytime 
+        it runs automatically when you save
+    --verbose is used to display extra information that helps us to troubleshoot
+    have a differant database for testing the operations since it involves removing and adding documents
+    
+- process manager used to make clean exit while there is error and restart the process
+
+
 
 ################################################ NOTE ###################################################
 - if you building api application then neglect the pages and views 

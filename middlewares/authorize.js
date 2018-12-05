@@ -1,6 +1,6 @@
 const config = require("config");
 const jwt = require("jsonwebtoken");
-const debug = require("debug")("app:authorizeFunction");
+
 
 function auth(req, res, next) {
   const token = req.header("x-auth-token");

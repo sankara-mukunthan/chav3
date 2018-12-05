@@ -1,0 +1,4 @@
+{
+  "name": "savithri - test",
+  "db": "mongodb://localhost:27017/savithri_test"
+}

@@ -1,6 +1,7 @@
 {
-    "name": "savithri - development",
-    "mail": {
-        "host": "dev-mail-server"
-    }
+  "name": "savithri - development",
+  "db": "mongodb://localhost:27017/savithri",
+  "mail": {
+    "host": "dev-mail-server"
+  }
 }
